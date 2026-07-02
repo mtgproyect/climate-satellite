@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-02T14:57:23-03:00",
-  "last_success_at": "2026-07-02T14:57:23-03:00",
+  "generated_at": "2026-07-02T15:20:59-03:00",
+  "last_success_at": "2026-07-02T15:20:59-03:00",
   "enabled": true,
   "status": "ok",
   "source": {
@@ -21,30 +21,14 @@
     "animation_frames": 12
   },
   "latest": {
-    "filename": "TOP_C13_ARG_ALTA_20260702_174021Z.jpg",
-    "url": "https://estaticos.smn.gob.ar/vmsr/satelite/TOP_C13_ARG_ALTA_20260702_174021Z.jpg",
-    "timestamp_utc": "2026-07-02T17:40:21Z",
-    "timestamp_argentina": "2026-07-02T14:40:21-03:00",
+    "filename": "TOP_C13_ARG_ALTA_20260702_180021Z.jpg",
+    "url": "https://estaticos.smn.gob.ar/vmsr/satelite/TOP_C13_ARG_ALTA_20260702_180021Z.jpg",
+    "timestamp_utc": "2026-07-02T18:00:21Z",
+    "timestamp_argentina": "2026-07-02T15:00:21-03:00",
     "date_argentina": "2026-07-02",
-    "time_argentina": "14:40:21"
+    "time_argentina": "15:00:21"
   },
   "animation_frames": [
-    {
-      "filename": "TOP_C13_ARG_ALTA_20260702_155021Z.jpg",
-      "url": "https://estaticos.smn.gob.ar/vmsr/satelite/TOP_C13_ARG_ALTA_20260702_155021Z.jpg",
-      "timestamp_utc": "2026-07-02T15:50:21Z",
-      "timestamp_argentina": "2026-07-02T12:50:21-03:00",
-      "date_argentina": "2026-07-02",
-      "time_argentina": "12:50:21"
-    },
-    {
-      "filename": "TOP_C13_ARG_ALTA_20260702_160021Z.jpg",
-      "url": "https://estaticos.smn.gob.ar/vmsr/satelite/TOP_C13_ARG_ALTA_20260702_160021Z.jpg",
-      "timestamp_utc": "2026-07-02T16:00:21Z",
-      "timestamp_argentina": "2026-07-02T13:00:21-03:00",
-      "date_argentina": "2026-07-02",
-      "time_argentina": "13:00:21"
-    },
     {
       "filename": "TOP_C13_ARG_ALTA_20260702_161021Z.jpg",
       "url": "https://estaticos.smn.gob.ar/vmsr/satelite/TOP_C13_ARG_ALTA_20260702_161021Z.jpg",
@@ -124,25 +108,25 @@
       "timestamp_argentina": "2026-07-02T14:40:21-03:00",
       "date_argentina": "2026-07-02",
       "time_argentina": "14:40:21"
+    },
+    {
+      "filename": "TOP_C13_ARG_ALTA_20260702_175021Z.jpg",
+      "url": "https://estaticos.smn.gob.ar/vmsr/satelite/TOP_C13_ARG_ALTA_20260702_175021Z.jpg",
+      "timestamp_utc": "2026-07-02T17:50:21Z",
+      "timestamp_argentina": "2026-07-02T14:50:21-03:00",
+      "date_argentina": "2026-07-02",
+      "time_argentina": "14:50:21"
+    },
+    {
+      "filename": "TOP_C13_ARG_ALTA_20260702_180021Z.jpg",
+      "url": "https://estaticos.smn.gob.ar/vmsr/satelite/TOP_C13_ARG_ALTA_20260702_180021Z.jpg",
+      "timestamp_utc": "2026-07-02T18:00:21Z",
+      "timestamp_argentina": "2026-07-02T15:00:21-03:00",
+      "date_argentina": "2026-07-02",
+      "time_argentina": "15:00:21"
     }
   ],
   "frames": [
-    {
-      "filename": "TOP_C13_ARG_ALTA_20260702_135021Z.jpg",
-      "url": "https://estaticos.smn.gob.ar/vmsr/satelite/TOP_C13_ARG_ALTA_20260702_135021Z.jpg",
-      "timestamp_utc": "2026-07-02T13:50:21Z",
-      "timestamp_argentina": "2026-07-02T10:50:21-03:00",
-      "date_argentina": "2026-07-02",
-      "time_argentina": "10:50:21"
-    },
-    {
-      "filename": "TOP_C13_ARG_ALTA_20260702_140021Z.jpg",
-      "url": "https://estaticos.smn.gob.ar/vmsr/satelite/TOP_C13_ARG_ALTA_20260702_140021Z.jpg",
-      "timestamp_utc": "2026-07-02T14:00:21Z",
-      "timestamp_argentina": "2026-07-02T11:00:21-03:00",
-      "date_argentina": "2026-07-02",
-      "time_argentina": "11:00:21"
-    },
     {
       "filename": "TOP_C13_ARG_ALTA_20260702_141021Z.jpg",
       "url": "https://estaticos.smn.gob.ar/vmsr/satelite/TOP_C13_ARG_ALTA_20260702_141021Z.jpg",
@@ -318,6 +302,22 @@
       "timestamp_argentina": "2026-07-02T14:40:21-03:00",
       "date_argentina": "2026-07-02",
       "time_argentina": "14:40:21"
+    },
+    {
+      "filename": "TOP_C13_ARG_ALTA_20260702_175021Z.jpg",
+      "url": "https://estaticos.smn.gob.ar/vmsr/satelite/TOP_C13_ARG_ALTA_20260702_175021Z.jpg",
+      "timestamp_utc": "2026-07-02T17:50:21Z",
+      "timestamp_argentina": "2026-07-02T14:50:21-03:00",
+      "date_argentina": "2026-07-02",
+      "time_argentina": "14:50:21"
+    },
+    {
+      "filename": "TOP_C13_ARG_ALTA_20260702_180021Z.jpg",
+      "url": "https://estaticos.smn.gob.ar/vmsr/satelite/TOP_C13_ARG_ALTA_20260702_180021Z.jpg",
+      "timestamp_utc": "2026-07-02T18:00:21Z",
+      "timestamp_argentina": "2026-07-02T15:00:21-03:00",
+      "date_argentina": "2026-07-02",
+      "time_argentina": "15:00:21"
     }
   ]
 }
