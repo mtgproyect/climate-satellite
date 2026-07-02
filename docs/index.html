@@ -4,7 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#071a33">
+
+  <!--
+    El servidor de imágenes del SMN puede rechazar la incrustación cuando
+    recibe como Referer una página de otro dominio.
+  -->
+  <meta name="referrer" content="no-referrer">
+
   <title>Satélite SMN · ClimateProyectar</title>
+
   <style>
     :root {
       color-scheme: dark;
@@ -12,59 +20,181 @@
       background: #071a33;
       color: #eef6ff;
     }
-    * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; background: linear-gradient(180deg,#071a33,#0c2a4d); }
-    main { width: min(100% - 28px, 980px); margin: 0 auto; padding: 32px 0 48px; }
-    h1 { margin: 0 0 8px; }
-    .muted { color: #a9bdd4; }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(180deg, #071a33, #0c2a4d);
+    }
+
+    main {
+      width: min(100% - 28px, 980px);
+      margin: 0 auto;
+      padding: 32px 0 48px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+    }
+
+    .muted {
+      color: #a9bdd4;
+    }
+
     .card {
       margin-top: 22px;
       padding: 18px;
-      border: 1px solid rgba(255,255,255,.14);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: 20px;
-      background: rgba(255,255,255,.06);
-      box-shadow: 0 18px 50px rgba(0,0,0,.25);
+      background: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
     }
-    img {
-      display: block;
+
+    .image-stage {
+      position: relative;
+      display: grid;
+      place-items: center;
       width: 100%;
       aspect-ratio: 16 / 10;
-      object-fit: contain;
+      overflow: hidden;
       border-radius: 14px;
       background: #020810;
     }
-    .row { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 12px; }
-    .status { font-weight: 800; }
-    button {
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .loading {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: #a9bdd4;
+      text-align: center;
+      background: #020810;
+    }
+
+    .loading[hidden] {
+      display: none;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .status {
+      font-weight: 800;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button,
+    .official-image-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
       padding: 10px 14px;
       border: 0;
       border-radius: 12px;
       color: #071a33;
       background: #d9efff;
+      font: inherit;
       font-weight: 800;
+      text-decoration: none;
       cursor: pointer;
     }
-    a { color: #9fd5ff; }
+
+    .official-image-link {
+      color: #d9efff;
+      background: rgba(217, 239, 255, 0.12);
+      border: 1px solid rgba(217, 239, 255, 0.25);
+    }
+
+    a {
+      color: #9fd5ff;
+    }
   </style>
 </head>
+
 <body>
   <main>
     <p class="muted">ClimateProyectar · módulo independiente</p>
     <h1>Imágenes satelitales del SMN</h1>
-    <p class="muted">Las imágenes se cargan desde el servidor oficial del SMN. Este repositorio solo publica sus URLs.</p>
+
+    <p class="muted">
+      Las imágenes se cargan desde el servidor oficial del SMN.
+      Este repositorio solamente publica sus URLs.
+    </p>
 
     <section class="card">
-      <img id="satellite-image" alt="Imagen satelital de topes nubosos sobre Argentina">
+      <div class="image-stage">
+        <img
+          id="satellite-image"
+          alt="Imagen satelital de topes nubosos sobre Argentina"
+          referrerpolicy="no-referrer"
+          decoding="async"
+        >
+        <div id="loading" class="loading">
+          Cargando la imagen satelital oficial…
+        </div>
+      </div>
+
       <div class="row">
         <div>
-          <div id="status" class="status">Cargando…</div>
+          <div id="status" class="status">Cargando catálogo…</div>
           <div id="timestamp" class="muted"></div>
         </div>
-        <button id="toggle" type="button">Pausar animación</button>
+
+        <div class="actions">
+          <a
+            id="official-image-link"
+            class="official-image-link"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            referrerpolicy="no-referrer"
+            hidden
+          >
+            Abrir imagen oficial
+          </a>
+
+          <button id="toggle" type="button">
+            Pausar animación
+          </button>
+        </div>
       </div>
     </section>
 
-    <p class="muted">Fuente: <a href="https://www.smn.gob.ar/satelite" rel="noopener noreferrer">Servicio Meteorológico Nacional</a>.</p>
+    <p class="muted">
+      Fuente:
+      <a
+        href="https://www.smn.gob.ar/satelite"
+        target="_blank"
+        rel="noopener noreferrer"
+        referrerpolicy="no-referrer"
+      >
+        Servicio Meteorológico Nacional
+      </a>.
+    </p>
   </main>
 
   <script>
@@ -72,30 +202,25 @@
       "use strict";
 
       const image = document.getElementById("satellite-image");
+      const loading = document.getElementById("loading");
       const status = document.getElementById("status");
       const timestamp = document.getElementById("timestamp");
       const toggle = document.getElementById("toggle");
+      const officialImageLink = document.getElementById(
+        "official-image-link"
+      );
 
       let frames = [];
       let position = 0;
       let timer = null;
+      let consecutiveErrors = 0;
+      let loadingFrame = false;
 
-      function renderFrame() {
-        if (!frames.length) return;
-        const frame = frames[position % frames.length];
-        image.src = frame.url;
-        timestamp.textContent = `Cuadro: ${new Intl.DateTimeFormat("es-AR", {
-          dateStyle: "medium",
-          timeStyle: "medium",
-        }).format(new Date(frame.timestamp_argentina))}`;
-        position = (position + 1) % frames.length;
-      }
-
-      function start() {
-        if (timer || frames.length < 2) return;
-        timer = window.setInterval(renderFrame, 700);
-        toggle.textContent = "Pausar animación";
-      }
+      const dateFormatter = new Intl.DateTimeFormat("es-AR", {
+        dateStyle: "medium",
+        timeStyle: "medium",
+        timeZone: "America/Argentina/Buenos_Aires",
+      });
 
       function stop() {
         window.clearInterval(timer);
@@ -103,33 +228,148 @@
         toggle.textContent = "Reanudar animación";
       }
 
+      function start() {
+        if (timer || frames.length < 2) {
+          return;
+        }
+
+        timer = window.setInterval(() => {
+          void renderNextFrame();
+        }, 900);
+
+        toggle.textContent = "Pausar animación";
+      }
+
+      function preloadFrame(frame) {
+        return new Promise((resolve, reject) => {
+          const probe = new Image();
+
+          /*
+            Debe asignarse antes de src para que el navegador no envíe
+            la dirección de GitHub Pages al servidor del SMN.
+          */
+          probe.referrerPolicy = "no-referrer";
+          probe.decoding = "async";
+
+          probe.onload = () => resolve(frame);
+          probe.onerror = () => reject(
+            new Error(`No se pudo abrir ${frame.url}`)
+          );
+
+          probe.src = frame.url;
+        });
+      }
+
+      async function renderNextFrame() {
+        if (!frames.length || loadingFrame) {
+          return;
+        }
+
+        loadingFrame = true;
+        const frame = frames[position % frames.length];
+
+        officialImageLink.href = frame.url;
+        officialImageLink.hidden = false;
+
+        try {
+          await preloadFrame(frame);
+
+          image.referrerPolicy = "no-referrer";
+          image.src = frame.url;
+          image.alt =
+            `Imagen satelital de topes nubosos, ${dateFormatter.format(
+              new Date(frame.timestamp_argentina)
+            )}`;
+
+          timestamp.textContent =
+            `Cuadro: ${dateFormatter.format(
+              new Date(frame.timestamp_argentina)
+            )}`;
+
+          loading.hidden = true;
+          consecutiveErrors = 0;
+          position = (position + 1) % frames.length;
+
+          status.textContent =
+            `${frames.length} cuadros en animación`;
+        } catch (error) {
+          console.error(error);
+
+          consecutiveErrors += 1;
+          position = (position + 1) % frames.length;
+
+          loading.hidden = false;
+          loading.textContent =
+            "El servidor del SMN no permitió cargar este cuadro. " +
+            "Probando el siguiente…";
+
+          status.textContent =
+            "Problema temporal al cargar imágenes remotas";
+
+          if (consecutiveErrors >= frames.length) {
+            stop();
+
+            loading.textContent =
+              "El catálogo se cargó correctamente, pero el servidor " +
+              "de imágenes del SMN rechazó todos los cuadros. " +
+              "Podés comprobar la URL con «Abrir imagen oficial».";
+
+            timestamp.textContent =
+              "No se guardaron imágenes dentro de GitHub.";
+          }
+        } finally {
+          loadingFrame = false;
+        }
+      }
+
       toggle.addEventListener("click", () => {
-        if (timer) stop();
-        else start();
+        if (timer) {
+          stop();
+        } else {
+          void renderNextFrame();
+          start();
+        }
       });
 
-      fetch(`./manifiesto.json?t=${Date.now()}`, { cache: "no-store" })
+      fetch(`./manifiesto.json?t=${Date.now()}`, {
+        cache: "no-store",
+      })
         .then((response) => {
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+
           return response.json();
         })
-        .then((manifest) => {
+        .then(async (manifest) => {
           frames = Array.isArray(manifest.animation_frames)
             ? manifest.animation_frames
             : [];
-          status.textContent = manifest.status === "ok"
-            ? `${frames.length} cuadros en animación`
-            : "Se muestra el último catálogo disponible";
-          if (!frames.length && manifest.latest) frames = [manifest.latest];
-          if (!frames.length) throw new Error("Todavía no hay imágenes disponibles.");
+
+          if (!frames.length && manifest.latest) {
+            frames = [manifest.latest];
+          }
+
+          if (!frames.length) {
+            throw new Error(
+              "Todavía no hay imágenes satelitales disponibles."
+            );
+          }
+
           position = Math.max(0, frames.length - 1);
-          renderFrame();
+
+          await renderNextFrame();
           start();
         })
         .catch((error) => {
           console.error(error);
-          status.textContent = "No se pudo cargar el catálogo satelital.";
+
+          stop();
+          status.textContent =
+            "No se pudo cargar el catálogo satelital.";
           timestamp.textContent = error.message;
+          loading.textContent =
+            "No hay un catálogo satelital disponible.";
           toggle.hidden = true;
         });
     })();
