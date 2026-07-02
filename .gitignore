@@ -1,3 +1,22 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+*.log
 .DS_Store
 Thumbs.db
-__pycache__/
+
+# Protección: este repositorio nunca debe almacenar imágenes satelitales.
+docs/**/*.jpg
+docs/**/*.jpeg
+docs/**/*.png
+docs/**/*.webp
+docs/**/*.gif
+data/**/*.jpg
+data/**/*.jpeg
+data/**/*.png
+data/**/*.webp
+data/**/*.gif
