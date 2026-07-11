@@ -15,7 +15,7 @@ concurrency:
 jobs:
   actualizar:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
 
     steps:
       - name: Descargar repositorio
@@ -78,15 +78,12 @@ jobs:
           echo "No fue posible publicar después de 3 intentos."
           exit 1
 
-      - name: Preparar imágenes satelitales para R2
-        run: python scripts/preparar_satelite_r2.py
-
       - name: Instalar AWS CLI para R2
         run: |
           python -m pip install --upgrade pip
           pip install awscli
 
-      - name: Subir imágenes satelitales a Cloudflare R2 Media
+      - name: Subir satélite a Cloudflare R2
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
@@ -94,23 +91,9 @@ jobs:
           AWS_EC2_METADATA_DISABLED: true
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
         run: |
-          aws s3 sync .r2/satellite/TOP_C13_ARG_ALTA/ s3://weathervar-media/satellite/TOP_C13_ARG_ALTA/ \
-            --endpoint-url "$R2_ENDPOINT" \
-            --delete \
-            --content-type "image/jpeg" \
-            --cache-control "public, max-age=86400, immutable"
-
-      - name: Subir manifiesto satelital final a Cloudflare R2 Data
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: auto
-          AWS_EC2_METADATA_DISABLED: true
-          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
-        run: |
-          aws s3 cp .r2/satellite-manifiesto.json s3://weathervar-data/satellite/manifiesto.json \
+          aws s3 cp docs/manifiesto.json s3://weathervar-data/satellite/manifiesto.json \
             --endpoint-url "$R2_ENDPOINT" \
             --content-type "application/json" \
             --cache-control "public, max-age=300"
 
-          echo "Satélite publicado correctamente en Cloudflare R2 con imágenes propias."
+          echo "Satélite subido correctamente a Cloudflare R2."
