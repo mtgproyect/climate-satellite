@@ -1,6 +1,7 @@
 import json
 import os
 import shutil
+import time
 import urllib.request
 from pathlib import Path
 from copy import deepcopy
@@ -15,20 +16,55 @@ MEDIA_BASE_URL = os.environ.get(
     f"https://media.weathervar.com/satellite/{PRODUCT_ID}"
 ).rstrip("/")
 
+REQUEST_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/126.0.0.0 Safari/537.36"
+    ),
+    "Accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+    "Accept-Language": "es-AR,es;q=0.9,en;q=0.8",
+    "Referer": "https://www.smn.gob.ar/",
+    "Connection": "keep-alive",
+}
 
-def download_file(url: str, destination: Path) -> None:
+
+def download_file(url: str, destination: Path, attempts: int = 4) -> None:
     destination.parent.mkdir(parents=True, exist_ok=True)
 
-    request = urllib.request.Request(
-        url,
-        headers={
-            "User-Agent": "WeatherVar/1.0"
-        },
-    )
+    last_error = None
 
-    with urllib.request.urlopen(request, timeout=60) as response:
-        with destination.open("wb") as output:
-            shutil.copyfileobj(response, output)
+    for attempt in range(1, attempts + 1):
+        try:
+            print(f"Descargando intento {attempt}/{attempts}: {url}")
+
+            request = urllib.request.Request(
+                url,
+                headers=REQUEST_HEADERS,
+            )
+
+            with urllib.request.urlopen(request, timeout=60) as response:
+                content_type = response.headers.get("Content-Type", "")
+                if "image" not in content_type.lower():
+                    print(f"Advertencia: Content-Type inesperado: {content_type}")
+
+                with destination.open("wb") as output:
+                    shutil.copyfileobj(response, output)
+
+            if destination.stat().st_size == 0:
+                raise RuntimeError(f"Archivo descargado vacío: {destination}")
+
+            print(f"OK: {destination} ({destination.stat().st_size} bytes)")
+            return
+
+        except Exception as error:
+            last_error = error
+            print(f"Error descargando {url}: {error}")
+
+            if attempt < attempts:
+                time.sleep(2 * attempt)
+
+    raise RuntimeError(f"No se pudo descargar {url}") from last_error
 
 
 def main() -> None:
@@ -55,7 +91,7 @@ def main() -> None:
             raise RuntimeError(f"Frame incompleto: {frame}")
 
         local_file = OUTPUT_DIR / filename
-        print(f"Descargando {original_url}")
+
         download_file(original_url, local_file)
 
         new_frame = deepcopy(frame)
