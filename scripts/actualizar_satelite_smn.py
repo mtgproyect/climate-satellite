@@ -40,8 +40,7 @@ jobs:
           python -m json.tool docs/manifiesto.json > /dev/null
           python -m unittest discover -s tests -v
 
-      - name: Guardar manifiesto en GitHub
-        shell: bash
+      - name: Guardar manifiesto
         run: |
           git config user.name "github-actions[bot]"
           git config user.email \
@@ -50,7 +49,7 @@ jobs:
           git add docs/manifiesto.json
 
           if git diff --cached --quiet; then
-            echo "No hay un cuadro nuevo para guardar en GitHub."
+            echo "No hay un cuadro nuevo para publicar."
             exit 0
           fi
 
@@ -58,17 +57,16 @@ jobs:
 
           for intento in 1 2 3; do
             echo "Intento de publicación ${intento}/3"
-
             git fetch origin main
 
             if ! git rebase origin/main; then
               git rebase --abort || true
-              echo "Conflicto al integrar cambios remotos."
+              echo "Conflicto al integrar los cambios remotos."
               exit 1
             fi
 
             if git push origin HEAD:main; then
-              echo "Catálogo satelital actualizado en GitHub."
+              echo "Catálogo satelital publicado."
               exit 0
             fi
 
@@ -77,23 +75,3 @@ jobs:
 
           echo "No fue posible publicar después de 3 intentos."
           exit 1
-
-      - name: Instalar AWS CLI para R2
-        run: |
-          python -m pip install --upgrade pip
-          pip install awscli
-
-      - name: Subir satélite a Cloudflare R2
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: auto
-          AWS_EC2_METADATA_DISABLED: true
-          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
-        run: |
-          aws s3 cp docs/manifiesto.json s3://weathervar-data/satellite/manifiesto.json \
-            --endpoint-url "$R2_ENDPOINT" \
-            --content-type "application/json" \
-            --cache-control "public, max-age=300"
-
-          echo "Satélite subido correctamente a Cloudflare R2."
